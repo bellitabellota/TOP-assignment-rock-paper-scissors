@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button class="js-rock-button">Rock</button>
+  <button class="js-paper-button">Paper</button>
+  <button class="js-scissors-button">Scissors</button>
+  <div class="js-result"></div>
+  <div class="js-winner"></div>
+  <script>
+    let playerSelection = '';
+    let computerSelection = '';
+    let result = '';
+    let wins = 0;
+    let losses = 0;
+    let ties = 0;
+
+    const resultMessage = document.querySelector('.js-result');
+    const winMessage = document.querySelector('.js-winner');
+
+    document.querySelector('.js-rock-button').addEventListener('click', () => {
+      resultMessage.textContent = playRound('rock');
+      checkForWinner();
+    })
+
+    document.querySelector('.js-paper-button').addEventListener('click', () => {
+      resultMessage.textContent = playRound('paper');
+      checkForWinner();
+    })
+
+    document.querySelector('.js-scissors-button').addEventListener('click', () => {
+      resultMessage.textContent = playRound('scissors');
+      checkForWinner();
+    })
+    
+    function getComputerChoice() {      
+      let number = Math.random();
+      
+      if (number < 1/3) {
+        computerSelection = 'scissors';
+      } else if (number > 1/3 && number < 2/3) {
+        computerSelection = 'rock';
+      } else if (number > 2/30 ) {
+        computerSelection = 'paper';
+      }
+      return computerSelection;
+    }
+    
+    function playRound(playerSelection) {
+    
+      let message = '';
+
+      computerSelection = getComputerChoice();
+
+      if (playerSelection === 'scissors') {
+        if (computerSelection ==='scissors') {result = 'Tie'; message =`Tie. Both picked scissors`;}
+        else if (computerSelection === 'rock') {result = 'You loose'; message =`You loose: ${computerSelection} beats ${playerSelection}`;}
+        else if (computerSelection === 'paper') {result = 'You win'; message =`You win: ${playerSelection} beats ${computerSelection}`;}
+      }
+
+      if (playerSelection === 'paper') {
+        if (computerSelection ==='paper') {result = 'Tie'; message =`Tie. Both picked paper`;}
+        else if (computerSelection === 'rock') {result = 'You win'; message =`You win: ${playerSelection} beats ${computerSelection}`;}
+        else if (computerSelection === 'scissors') {result = 'You loose'; message =`You loose: ${computerSelection} beats ${playerSelection}`;}
+      }
+
+      if (playerSelection === 'rock') {
+        if (computerSelection ==='rock') {result = 'Tie'; message =`Tie. Both picked rock`;}
+        else if (computerSelection === 'scissors') { result = 'You win'; message =`You win: ${playerSelection} beats ${computerSelection}`;}
+        else if (computerSelection === 'paper') {result = 'You loose'; message =`You loose: ${computerSelection} beats ${playerSelection}`;}
+      }
+
+      return message;
+    }
+
+    function checkForWinner() {
+
+      if (result === 'Tie') {
+        ties ++;
+      } else if (result ==='You win') {
+        wins ++;
+      } else if (result === 'You loose') {
+        losses ++;
+      }
+      
+      if (wins === 5 || losses === 5) {
+        if (losses > wins) {
+          winMessage.textContent = 'The computer won the game!';
+        }
+        else if (wins > losses) {
+          winMessage.textContent ='You won the game!';
+        }
+      }
+    }
+  </script>
+  
+</body>
+</html>
