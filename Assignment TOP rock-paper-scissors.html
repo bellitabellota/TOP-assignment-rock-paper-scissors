@@ -4,40 +4,128 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-  <button class="js-rock-button">Rock</button>
-  <button class="js-paper-button">Paper</button>
-  <button class="js-scissors-button">Scissors</button>
-  <div class="js-result"></div>
-  <div class="js-winner"></div>
+  <div class="background-image">
+    <div class="game-container">
+    
+      <h1>Rock-Paper-Scissors-Game</h1>
+  
+      <div class="js-speech-bubble speech-bubble">I'm Joe the warden of the Wild West. If you want to discover the Wild West, you have to earn this privilege. Only if you dare to compete against me and emerge as 5-fold winner from the Rock-Paper-Scissors-Game you will be granted entry. <br><br>
+  
+        Are you ready?
+        <div class="tri"></div>
+      </div>
+  
+      <button class="js-start-game start-game">Start Game</button>
+  
+      <div class="js-container-player-moves container-player-moves">
+        <button class="js-rock-button move-button"><img class="move-button-img" src="/images/image1.jpg"></button>
+        <button class="js-paper-button move-button"><img class="move-button-img" src="/images/image2.jpg"></button>
+        <button class="js-scissors-button move-button"><img class="move-button-img" src="/images/image3.jpg"></button>
+      </div>
+
+      <div class="result-score-container">
+        <div class="js-computer-move-container computer-move-container">
+          <p class="computer-move-text">Joe is choosing his move</p>
+          <img class="computer-move-image" id="image" src="">
+        </div>
+        <div class="js-result result"></div><br>
+        <div class="js-score score"></div>
+      </div>
+
+      <div class="js-winner winner display-none"></div>
+    </div>
+  </div>
+
+  <div class="cowboy-container"><img class="cowboy" src="/images/cowboy-transparent.png"></div>
+
+  <div class="info-container">
+    <p class="info">i</p>
+    <div class="img-sources">
+      Source of images:<br><br>
+      Scissors &#45; <a href="https://icon-library.com/icon/rock-paper-scissors-icon-15.html.html">Rock Paper Scissors Icon # 21635 from Icon Library</a><br><br>
+      Paper &#45; <a href="https://icon-library.com/icon/rock-paper-scissors-icon-13.html.html">Rock Paper Scissors Icon # 21621 from Icon Library</a><br><br>
+      Rock &#45; <a href="https://icon-library.com/icon/rock-paper-scissors-icon-13.html.html">Rock Paper Scissors Icon # 21621 from Icon Library</a><br><br>
+      Background image &#45; <a href="https://www.vecteezy.com/free-photos">Free Stock photo by Vecteezy</a><br><br>
+      Cowboy Silhouette &#45; <a href="https://clipart-library.com/clipart/piodbRnMT.htm">Cowboy Silhouette #1468722 from Clipart library</a>      
+    </div>
+  </div>
+
   <script>
-    let playerSelection = '';
     let computerSelection = '';
     let result = '';
+    let gameIsPlaying = false;
+    let intervalId;
     let wins = 0;
     let losses = 0;
     let ties = 0;
 
     const resultMessage = document.querySelector('.js-result');
+    const scoreMessage = document.querySelector('.js-score');
     const winMessage = document.querySelector('.js-winner');
+    const containerPlayerMove = document.querySelector('.js-container-player-moves');
+    const speechBubble = document.querySelector('.js-speech-bubble');
+    const startGameButton = document.querySelector('.js-start-game');
+    const computerMoveContainer = document.querySelector('.js-computer-move-container');
+
+    startGameButton.addEventListener('click', () => {
+      containerPlayerMove.style.display='flex';
+      speechBubble.classList.add('display-none');
+      startGameButton.classList.add('display-none');
+    })
 
     document.querySelector('.js-rock-button').addEventListener('click', () => {
-      resultMessage.textContent = playRound('rock');
-      checkForWinner();
+      playGame('rock');
     })
 
     document.querySelector('.js-paper-button').addEventListener('click', () => {
-      resultMessage.textContent = playRound('paper');
-      checkForWinner();
+      playGame('paper');
     })
 
     document.querySelector('.js-scissors-button').addEventListener('click', () => {
-      resultMessage.textContent = playRound('scissors');
-      checkForWinner();
+      playGame('scissors');
     })
+
+    function playGame(playerSelection) {
+      if (!gameIsPlaying) {
+        gameIsPlaying = true;
+
+        if (wins < 5 && losses < 5) {
+
+          computerMoveContainer.style.display='flex';
+          randomlyDisplayingImages();
+
+          setTimeout(() => {
+            clearInterval(intervalId);
+            computerMoveContainer.style.display='none';
+
+            resultMessage.textContent = checkForWinnerOfRound(playerSelection);
+            updateScore();
+            scoreMessage.textContent = `You ${wins} || ${losses} Joe`;
+            gameIsPlaying = false;
+            checkForFivefoldWinner();
+            
+          }, 2500);
+        }
+      }
+    }
+
+    function randomlyDisplayingImages() {
+      const image = document.getElementById('image');
+      const images = ['image1.jpg', 'image2.jpg', 'image3.jpg'];
+      
+      intervalId = setInterval(() =>{
+        let random = Math.floor (Math.random() * 3);
+        
+        image.src = `/images/${images[random]}`;
+        image.src = `/images/${images[random]}`;
+      }, 100);
+    }
     
-    function getComputerChoice() {      
+    function getComputerMove() {      
       let number = Math.random();
       
       if (number < 1/3) {
@@ -50,35 +138,30 @@
       return computerSelection;
     }
     
-    function playRound(playerSelection) {
+    function checkForWinnerOfRound(playerSelection) {
     
       let message = '';
 
-      computerSelection = getComputerChoice();
+      computerSelection = getComputerMove();
 
       if (playerSelection === 'scissors') {
-        if (computerSelection ==='scissors') {result = 'Tie'; message =`Tie. Both picked scissors`;}
-        else if (computerSelection === 'rock') {result = 'You loose'; message =`You loose: ${computerSelection} beats ${playerSelection}`;}
-        else if (computerSelection === 'paper') {result = 'You win'; message =`You win: ${playerSelection} beats ${computerSelection}`;}
-      }
-
-      if (playerSelection === 'paper') {
-        if (computerSelection ==='paper') {result = 'Tie'; message =`Tie. Both picked paper`;}
-        else if (computerSelection === 'rock') {result = 'You win'; message =`You win: ${playerSelection} beats ${computerSelection}`;}
-        else if (computerSelection === 'scissors') {result = 'You loose'; message =`You loose: ${computerSelection} beats ${playerSelection}`;}
-      }
-
-      if (playerSelection === 'rock') {
-        if (computerSelection ==='rock') {result = 'Tie'; message =`Tie. Both picked rock`;}
-        else if (computerSelection === 'scissors') { result = 'You win'; message =`You win: ${playerSelection} beats ${computerSelection}`;}
-        else if (computerSelection === 'paper') {result = 'You loose'; message =`You loose: ${computerSelection} beats ${playerSelection}`;}
+        if (computerSelection ==='scissors') {result = 'Tie'; message =`Both picked ${playerSelection}.\nTie.`;}
+        else if (computerSelection === 'rock') {result = 'You loose'; message =`You picked ${playerSelection}. Joe picked ${computerSelection}.\nYou loose.`;}
+        else if (computerSelection === 'paper') {result = 'You win'; message =`You picked ${playerSelection}. Joe picked ${computerSelection}.\nYou win.`;}
+      } else if (playerSelection === 'paper') {
+        if (computerSelection ==='paper') {result = 'Tie'; message =`Both picked ${playerSelection}.\nTie.`;}
+        else if (computerSelection === 'rock') {result = 'You win'; message =`You picked ${playerSelection}. Joe picked ${computerSelection}.\nYou win.`;}
+        else if (computerSelection === 'scissors') {result = 'You loose'; message =`You picked ${playerSelection}. Joe picked ${computerSelection}.\nYou loose.`;}
+      } else if (playerSelection === 'rock') {
+        if (computerSelection ==='rock') {result = 'Tie'; message =`Both picked ${playerSelection}.\nTie.`;}
+        else if (computerSelection === 'scissors') { result = 'You win'; message =`You picked ${playerSelection}. Joe picked ${computerSelection}.\nYou win.`;}
+        else if (computerSelection === 'paper') {result = 'You loose'; message =`You picked ${playerSelection}. Joe picked ${computerSelection}.\nYou loose.`;}
       }
 
       return message;
     }
 
-    function checkForWinner() {
-
+    function updateScore() {
       if (result === 'Tie') {
         ties ++;
       } else if (result ==='You win') {
@@ -86,17 +169,50 @@
       } else if (result === 'You loose') {
         losses ++;
       }
+    }
+
+    function restartGame() {
+      document.querySelector('.js-replay-button').addEventListener('click', () => {
+        containerPlayerMove.style.display='none';
+        speechBubble.classList.remove('display-none');
+        startGameButton.classList.remove('display-none');
+
+        resultMessage.textContent = '';
+        scoreMessage.textContent = '';
+        winMessage.classList.add('display-none');
       
+        wins = 0;
+        losses = 0;
+        ties = 0;
+      })
+    }
+
+    function checkForFivefoldWinner() {   
       if (wins === 5 || losses === 5) {
         if (losses > wins) {
-          winMessage.textContent = 'The computer won the game!';
+          winMessage.classList.remove('display-none');
+          winMessage.textContent = 'Joe won the game!\n';
+
+          const replayButton = document.createElement('button');
+          replayButton.classList.add('replay-button', 'js-replay-button')
+          replayButton.textContent = 'Play again';
+          winMessage.appendChild(replayButton);
+
+          restartGame();
         }
         else if (wins > losses) {
-          winMessage.textContent ='You won the game!';
+          winMessage.classList.remove('display-none');
+          winMessage.textContent ='You won the game!\n';
+
+          const replayButton = document.createElement('button');
+          replayButton.classList.add('replay-button', 'js-replay-button')
+          replayButton.textContent = 'Play again';
+          winMessage.appendChild(replayButton);
+
+          restartGame();
         }
       }
     }
   </script>
-  
 </body>
 </html>
