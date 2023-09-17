@@ -5,7 +5,7 @@ body {
 }
 
 .background-image {
-  background-image: url(/images/river-running-through-breathtaking-mountains.jpg);
+  background-image: url(images/river-running-through-breathtaking-mountains.jpg);
   height: 100vh;
   height: 100svh;
   background-position: center;

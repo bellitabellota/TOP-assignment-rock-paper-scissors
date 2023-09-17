@@ -63,8 +63,8 @@ function randomlyDisplayingImages() {
   intervalId = setInterval(() =>{
     let random = Math.floor (Math.random() * 3);
     
-    image.src = `/images/${images[random]}`;
-    image.src = `/images/${images[random]}`;
+    image.src = `images/${images[random]}`;
+    image.src = `images/${images[random]}`;
   }, 100);
 }
 
