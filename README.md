@@ -1,4 +1,7 @@
-For a Live preview visit this [link](https://bellitabellota.github.io/TOP-assignment-rock-paper-scissors/).
+Preview
+<img src="https://github.com/bellitabellota/TOP-assignment-rock-paper-scissors/blob/master/Rock%20Paper%20Scissors.gif" />
+
+Want to try yourself? Visit this [link](https://bellitabellota.github.io/TOP-assignment-rock-paper-scissors/).
 
 # Rock Paper Scissors
 
