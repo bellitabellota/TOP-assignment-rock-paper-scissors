@@ -1,5 +1,6 @@
 Preview
-<img src="https://github.com/bellitabellota/TOP-assignment-rock-paper-scissors/blob/master/Rock%20Paper%20Scissors.gif" />
+
+<img src="https://github.com/bellitabellota/TOP-assignment-rock-paper-scissors/blob/master/Rock%20Paper%20Scissors%20800px.gif" />
 
 Want to try yourself? Visit this [link](https://bellitabellota.github.io/TOP-assignment-rock-paper-scissors/).
 
